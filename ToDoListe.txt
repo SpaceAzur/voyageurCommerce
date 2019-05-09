@@ -13,3 +13,4 @@
 
 ########### Ce que l'on doit faire #############
 
+- code permutation >>>> fonction permutation
