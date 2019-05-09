@@ -13,25 +13,11 @@ from fonctionsSolutionOptimale import *
 #################################################################
 
 
-############## IMPORTATION FICHIER CSV ##########################
+############## EXPLOITATION DU FICHIER CSV ##########################
 
-# Importe le fichier.csv et le stock dans un tableau ville
-# fichier par defaut pour l'instant = test10.csv
-ville = []
-with open('test10.csv') as csv_file:
-    csv_reader = csv.reader(csv_file, delimiter=',')
-    line_count = 0
-    for row in csv_reader:
-        for coord in row:
-            coord = float(coord)
-        ville.append(row)
+#Ouvre le fichier CSV et attribue ses 2 RETURNS aux variables "ville" et "nbVille"
+ville, nbVille = exploitationFichierCSV('test10.csv')
 
-
-# Supprime la 1ere ligne de la liste extraite (supprime le nombre de ligne)
-del ville[0]
-# Sauvegarde la taille de la liste extraite du fichier
-# sommet = integer
-nbVille = len(ville)
 
 
 parcours = []
@@ -39,14 +25,16 @@ parcours.append(0)
 
 sauve = ville
 
-
 print("Nombre de ville :", len(ville))
 print("Liste des distances entre 1ere ville et chaque ville :\n", listeDistance(ville))
 print("Numero de ville la plus proche de la 1ere ville :", numVillePlusProche(ville))
 
+
+## ToDo A supprimer ?
 zaza = numVillePlusProche(ville)
 print(ville[zaza])
 
+## ToDo A supprimer ?
 chem = list(permutations(ville[1:]))
 cheminPossible= []
 for p in chem:
@@ -54,14 +42,11 @@ for p in chem:
         cheminPossible.append(p)
 
 
+############### TESTS DE FONCTIONNEMENT ##############################
 
-print("lenght de chemin2 ", len(cheminPossible))
+print("Nombre des vrais chemins possibles ", len(cheminPossible))
 
-print("permutation ", len(list(permutations(ville[1:]))))
+print("Nombre total des chemins avec chemins miroir ", len(list(permutations(ville[1:]))))
 
-
-
-
-
-print(calculDistanceChemin(cheminPossible[2]))
+print("Distance Totale du chemin [2]", calculDistanceTotaleChemin(cheminPossible[2]))
 
