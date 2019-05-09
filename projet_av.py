@@ -1,8 +1,9 @@
-
+import heapq 
 from mpmath import *
 import csv
-import scipy
 import numpy as np
+import matplotlib as plt
+from itertools import *
 
 
 # Importe le fichier.csv et le stock dans un tableau ville
@@ -16,16 +17,18 @@ with open('test10.csv') as csv_file:
             coord = float(coord)
         ville.append(row)
 
-# Sauvegarde la taille de la liste extraite du fichier
-# sommet = integer
-sommet = len(ville) - 1
+
 # Supprime la 1ere ligne de la liste extraite (supprime le nombre de ligne)
 del ville[0]
+# Sauvegarde la taille de la liste extraite du fichier
+# sommet = integer
+nbVille = len(ville)
+
 
 
 # FONCTION : 
 # ensures : Calcul la distance euclidienne entre deux villes
-# input   : ville de depart et ville d'arrivée, en tuple(x,y)
+# param   : ville de depart et ville d'arrivee, en tuple(x,y)
 # return  : float | distance
 def distance(depart, arrivee):
     dist = (float(depart[0])-float(arrivee[0]))**2 + (float(depart[1])-float(arrivee[1]))**2
@@ -35,31 +38,62 @@ def distance(depart, arrivee):
 
 # FONCTION
 # ensures : Calcule la distance de chaque chemin possible depuis la 1ere ville
-# input   : liste des villes
+# param   : liste des villes
 # return  : float | liste de distances
 def listeDistance(ville):
-    parcours = []
+    listeDesDistances = []
     for vertice in ville:
         teste = distance(ville[0],vertice)
         if(teste != 0.0):
-            parcours.append(teste)
-    return parcours
+            listeDesDistances.append(teste)
+    return listeDesDistances
 
 # FONCTION  
 # ensures ; Trouve la ville la plus proches de la 1ere ville
-# input   : liste des villes
+# param   : liste des villes
 # return  : integer | indice de la ville la plus proche dans la liste "ville"
 def numVillePlusProche(ville):
-    dist = []
+    listeDesDistance = []
     ville = np.array(ville)
     for (indice, sommet) in enumerate(ville):
-        toto = distance(ville[0],sommet)
-        if(toto != 0.0):
-            dist.append(toto)
-    solu = dist.index(min(dist)) + 1
-    return solu
+        calculDistance = distance(ville[0],sommet)
+        if(calculDistance != 0.0):
+            listeDesDistance.append(calculDistance)
+    indiceVillePlusProche = listeDesDistance.index(min(listeDesDistance)) + 1
+    return indiceVillePlusProche
 
-print(ville)
-print(listeDistance(ville))
-print(numVillePlusProche(ville))
+parcours = []
+parcours.append(0)
 
+sauve = ville
+
+
+
+# A GARDER ville.pop(2) supprime item a l indice
+
+
+# for (i, city) in enumerate(ville):
+#     for (j, parcouru) in enumerate(parcours):
+#         if ville[i] not in parcours:
+#             print(j)
+
+
+
+print("Nombre de ville :", len(ville))
+print("Liste des distances entre 1ere ville et chaque ville :\n", listeDistance(ville))
+print("Numero de ville la plus proche de la 1ere ville :", numVillePlusProche(ville))
+
+zaza = numVillePlusProche(ville)
+print(ville[zaza])
+
+chem = list(permutations(ville[1:]))
+cheminPossible= []
+for p in chem:
+    if p[0] < p[1]:
+        cheminPossible.append(p)
+
+print("lenght de chemin2 ", len(cheminPossible))
+
+print(cheminPossible[1])
+
+print("permutation ", len(list(permutations(ville[1:]))))
