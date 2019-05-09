@@ -2,7 +2,7 @@
 
 - fonction calcul distance entre 2 villes
 - fonction calcul distance d'un chemin
-
+- fonction exploitationFichierCSV qui return la liste des villes (tuples) et le nombre de villes
 
 
 ########## Ce qui est en cours ###############
@@ -13,4 +13,3 @@
 
 ########### Ce que l'on doit faire #############
 
-- convertir le code d'ouverture de fichier CSV en fonction ouvrirFichierCSV
