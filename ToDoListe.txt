@@ -13,4 +13,4 @@
 
 ########### Ce que l'on doit faire #############
 
-- convertir le code d'ouverture de fichier CSV en font ouvrirFichierCSV
+- convertir le code d'ouverture de fichier CSV en fonction ouvrirFichierCSV
