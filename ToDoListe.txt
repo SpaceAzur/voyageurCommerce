@@ -3,14 +3,15 @@
 - fonction calcul distance entre 2 villes
 - fonction calcul distance d'un chemin
 - fonction exploitationFichierCSV qui return la liste des villes (tuples) et le nombre de villes
+- code permutation >>>> fonction permutation
+- code chemins possibles >>> fonction chemins possibles
 
 
 ########## Ce qui est en cours ###############
 
-- fonction listeComplèteChemins : ajouter ville[0] en début / fin chaque cheminn
+- fonction listeComplèteChemins : ajouter ville[0] en début / fin chaque chemin (cf test Antoine)
 
 
 
 ########### Ce que l'on doit faire #############
 
-- code permutation >>>> fonction permutation
