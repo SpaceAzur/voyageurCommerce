@@ -5,6 +5,31 @@ from itertools import *
 from fonctionsSolutionOptimale import *
 
 
+#FONCTION
+# ensures : Ouvre le fichier CSV est exploite ses données
+# param   : fichier CSV
+# return dans l'ordre  : liste des villes (tuples) | Nombre de villes
+def exploitationFichierCSV (fichiercsv) :
+    listeTuplesVille = []
+    with open(fichiercsv) as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=',')
+        line_count = 0
+        for row in csv_reader:
+            for coord in row:
+                coord = float(coord)
+
+            #liste des villes (tuples x,y)
+            listeTuplesVille.append(row)
+
+    #nombre de villes
+    nbVille = listeTuplesVille[0]
+    #suppression ligne du nombre de villes
+    del listeTuplesVille[0]
+
+    #renvoi ville et nbVille
+    return listeTuplesVille, nbVille
+
+
 
 # FONCTION :
 # ensures : Calcul la distance euclidienne entre deux villes
@@ -28,8 +53,9 @@ def listeDistance(ville):
             listeDesDistances.append(teste)
     return listeDesDistances
 
+
 # FONCTION
-# ensures : creer une liste de tous les chemins possible, sans doublon mirroir, avec la ville de depart en debut et fin de chaque chemin
+# ensures : creer une liste de tous les chemins possibles, sans mirroir, avec la ville de depart en debut et fin de chaque chemin
 # param   : liste des villes fichier csv
 # return  : type liste de liste 
 def listeCompleteChemin(ville):
@@ -50,7 +76,7 @@ def listeCompleteChemin(ville):
 
 
 # FONCTION
-# ensures ; Trouve la ville la plus proches de la 1ere ville
+# ensures ; Trouve la ville la plus proche de la 1ere ville
 # param   : liste des villes
 # return  : integer | indice de la ville la plus proche dans la liste "ville"
 def numVillePlusProche(ville):
@@ -66,21 +92,21 @@ def numVillePlusProche(ville):
 
 #FONCTION
 #Calcul la distance totale d'un chemin donné
-def calculDistanceChemin (Chemin) :
+def calculDistanceTotaleChemin (Chemin) :
     i = 0 ;
     j = 1 ;
     chemin = 0 ;
     ville = 0 ;
     distancetemp = 0;
-    distanceTotal = 0;
+    distanceTotale = 0;
 
 
     while j < (len(Chemin)):
         #calcul distance temporaire
         distancetemp = distance(Chemin[i], Chemin[j])
         #calcul distance totale
-        distanceTotal = distanceTotal + distancetemp
+        distanceTotale = distanceTotale + distancetemp
         i = i + 1;
         j = j + 1;
 
-    return distanceTotal
+    return distanceTotale
