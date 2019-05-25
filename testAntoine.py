@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import heapq
 from mpmath import *
 import csv
@@ -77,11 +78,13 @@ print("Numero de ville la plus proche de la 1ere ville :", numVillePlusProche(vi
 # Liste toutes les permutations possibles de chemins
 # Divise la liste en 2 car nous excluons les doublons mirroirs
 def listeCheminsPossible(villes):
+
     chem = list(permutations(ville[1:]))
     cheminPossible= []
     for p in chem:
         if p[0] < p[1]:
             cheminPossible.append(p)
+<<<<<<< HEAD
     return cheminPossible
 
 print("Nb de permutation total ", len(list(permutations(ville[1:]))),"\n")
