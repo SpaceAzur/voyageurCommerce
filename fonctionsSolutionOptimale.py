@@ -6,12 +6,13 @@ from fonctionsSolutionOptimale import *
 
 
 #FONCTION
-# ensures : Ouvre le fichier CSV est exploite ses données
+# ensures : creation de la liste de toutes les villes à visiter
 # param   : fichier CSV
-# return dans l'ordre  : liste des villes (tuples) | Nombre de villes
-def exploitationFichierCSV (fichiercsv) :
-    listeTuplesVille = []
-    with open(fichiercsv) as csv_file:
+# return dans l'ordre  : liste des villes (tuples X Y)
+def listeCoordonneesVillesFromCSV (fichierCSV) :
+
+    listeCoordonneesVilles = []
+    with open(fichierCSV) as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         line_count = 0
         for row in csv_reader:
@@ -19,15 +20,13 @@ def exploitationFichierCSV (fichiercsv) :
                 coord = float(coord)
 
             #liste des villes (tuples x,y)
-            listeTuplesVille.append(row)
+            listeCoordonneesVilles.append(row)
 
-    #nombre de villes
-    nbVille = listeTuplesVille[0]
-    #suppression ligne du nombre de villes
-    del listeTuplesVille[0]
+    #suppression de la ligne du nombre de villes
+    del listeCoordonneesVilles[0]
 
-    #renvoi ville et nbVille
-    return listeTuplesVille, nbVille
+    #renvoi ville
+    return listeCoordonneesVilles
 
 
 
@@ -35,27 +34,27 @@ def exploitationFichierCSV (fichiercsv) :
 # ensures : Calcul la distance euclidienne entre deux villes
 # param   : ville de depart et ville d'arrivee, en tuple(x,y)
 # return  : float | distance
-def distance(depart, arrivee):
-    dist = (float(depart[0])-float(arrivee[0]))**2 + (float(depart[1])-float(arrivee[1]))**2
-    dist = sqrt(dist)
-    return dist
+def distanceEntre2Villes(depart, arrivee):
+    distance = (float(depart[0])-float(arrivee[0]))**2 + (float(depart[1])-float(arrivee[1]))**2
+    distance = sqrt(distance)
+    return distance
 
 
 # FONCTION
 # ensures : Calcule la distance de chaque chemin possible depuis la 1ere ville
 # param   : liste des villes
 # return  : float | liste de distances
-def listeDistance(ville):
+def listeDistanceVilleDepartChaqueVille(listeVilles):
     listeDesDistances = []
-    for vertice in ville:
-        teste = distance(ville[0],vertice)
+    for vertice in listeVilles:
+        teste = distanceEntre2Villes(listeVilles[0],vertice)
         if(teste != 0.0):
             listeDesDistances.append(teste)
     return listeDesDistances
 
 
 #FONCTION
-# ensures : Création de la liste de tous les chemins possibles et de leur nombre
+# ensures : Création de la liste de tous les chemins possibles
 # param   : liste des villes (tuples) créées par la fonction correspondante
 # return dans l'ordre  : liste de tous les chemins possibles SANS miroir | nombre de chemins possibles
 def listeCheminsPossibles (ville) :
@@ -65,9 +64,8 @@ def listeCheminsPossibles (ville) :
         if p[0] < p[1]:
             cheminsPossibles.append(p)
 
-    nombreCheminsPossibles = len(cheminsPossibles)
 
-    return cheminsPossibles, nombreCheminsPossibles
+    return cheminsPossibles
 
 
 
@@ -75,11 +73,11 @@ def listeCheminsPossibles (ville) :
 # ensures ; Trouve la ville la plus proche de la 1ere ville
 # param   : liste des villes
 # return  : integer | indice de la ville la plus proche dans la liste "ville"
-def numVillePlusProche(ville):
+def numeroVillePlusProcheVilleDepart(ville):
     listeDesDistance = []
     ville = np.array(ville)
     for (indice, sommet) in enumerate(ville):
-        calculDistance = distance(ville[0],sommet)
+        calculDistance = distanceEntre2Villes(ville[0],sommet)
         if(calculDistance != 0.0):
             listeDesDistance.append(calculDistance)
     indiceVillePlusProche = listeDesDistance.index(min(listeDesDistance)) + 1
@@ -99,7 +97,7 @@ def calculDistanceTotaleChemin (Chemin) :
 
     while j < (len(Chemin)):
         #calcul distance temporaire
-        distancetemp = distance(Chemin[i], Chemin[j])
+        distancetemp = distanceEntre2Villes(Chemin[i], Chemin[j])
         #calcul distance totale
         distanceTotale = distanceTotale + distancetemp
         i = i + 1;
