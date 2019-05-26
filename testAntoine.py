@@ -140,7 +140,7 @@ def calculDistanceChemin (listeChemin) :
 #--------------------------------------------------------------------------------------------
 # FONCTION
 # ensures : calcul la distance entre 2 villes, arrondi a 2 decimal
-# return  : distance (float 2 decimals)
+# returns : distance (float 2 decimals)
 def distance2(depart, arrivee):
     dist = (float(depart[0])-float(arrivee[0]))**2 + (float(depart[1])-float(arrivee[1]))**2
     dist = sqrt(dist)
@@ -149,8 +149,9 @@ def distance2(depart, arrivee):
 
 #FONCTION
 # ensures : Calcul la matrice des distances entre chaque ville
-# return  : matricde de distance
+# returns : matricde de distance
 def matriceDistance(listeVille):
+    global sauve
     # Conversion de la liste des villes en tableau
     x = np.array(listeVille)
     # initialisation de la matrice de distance
