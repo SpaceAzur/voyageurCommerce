@@ -1,7 +1,24 @@
 import csv
 import math
+import time
+from functools import wraps
 from itertools import *
 from fonctionsSolutionOptimale import *
+
+#FONCTION
+#ENSURES : calcul le temps d'execution d'une fonction
+#USAGE : ajouter @timing devant la fonction
+#param : none
+#RETURN : duree execution fonction
+def timerFonction(f):
+    def wrap(*args):
+        time1 = time.time()
+        ret = f(*args)
+        time2 = time.time()
+        print('{:s} function took {:.3f} ms'.format(f.__name__, (time2-time1)*1000.0))
+
+        return ret
+    return wrap
 
 
 #FONCTION
@@ -9,6 +26,7 @@ from fonctionsSolutionOptimale import *
 # param   : fichier CSV
 # return dans l'ordre  : liste des villes (tuples X Y)
 
+@timerFonction
 def listeCoordonneesVillesFromCSV (fichierCSV) :
     #initialisation liste coordonnees villes
     listeCoordonneesVilles = []
@@ -38,11 +56,12 @@ def listeCoordonneesVillesFromCSV (fichierCSV) :
 # param   : ville de depart et ville d'arrivee, en tuple(x,y)
 # return  : float | distance
 def calculDistanceEntre2Villes(depart, arrivee):
-
+    #premiere partie : calcul sous la racine
     distance = (float(depart[0])-float(arrivee[0]))**2 + (float(depart[1])-float(arrivee[1]))**2
+    #deuxieme partie : racine du resultat obtenu precedemment
     distance = math.sqrt(distance)
 
-    #renvoi distance entre 2 villes
+    #renvoi distance euclidiennte entre 2 villes
     return distance
 
 
@@ -63,6 +82,7 @@ def listeDistanceVilleDepartChaqueVille(listeVilles):
 # ensures : Création de la liste de tous les chemins possibles
 # param   : liste des villes (tuples) créées par la fonction correspondante
 # return  : liste chemins possibles SANS miroir avec ville 0 comme ville depart
+@timerFonction
 def listeCheminsPossibles (listeVilles) :
     #liste chemins sans filtre
     cheminsSansFiltre = list(permutations(listeVilles))
@@ -75,7 +95,7 @@ def listeCheminsPossibles (listeVilles) :
 
     #retrait des miroirs de la liste temporaire
     for chemin in cheminsSansFiltre :
-        if chemin[0] < chemin[1]:
+        if (chemin[0] < chemin[1]):
             cheminsPossiblesTMP.append(chemin)
 
     #retrait des chemins qui ne commencent pas par la ville choisie comme ville de depart
@@ -87,6 +107,7 @@ def listeCheminsPossibles (listeVilles) :
 
     #compteur iteration chemin
     i = 0
+
     #pour chaque chemin de tous les chemins possibles
     for chemin in cheminsPossibles :
         #ajout de la ville de depart comme ville de retour a la fin de la liste
@@ -102,6 +123,7 @@ def listeCheminsPossibles (listeVilles) :
 #ensures : calcul les distances de tous les chemins possibles
 #param : liste de tous les chemins possibles
 #return : liste des distances de tous les chemins
+@timerFonction
 def calculDistancesCheminsPossibles (listeCheminsPossibles) :
 
     #initialisation liste distances chemins possibles
@@ -120,50 +142,59 @@ def calculDistancesCheminsPossibles (listeCheminsPossibles) :
         #ajout distance au tableau des distances
         listeDistancesCheminsPossibles.append(distance)
 
-
+    #renvoi la liste des distances des chemins possibles
     return listeDistancesCheminsPossibles
 
 
 #FONCTION
-#Calcul la distance totale d'un chemin donné
+#ENSURES : Calcul la distance d'un chemin donné
+#PARAM : un chemin
+#RETURN : distance du chemin
 def calculDistanceUnChemin (chemin) :
 
+    #compteurs
     i = 0 ;
     j = 1 ;
+
+    #variable temporaire
     distancetemp = 0;
+
+    #distance du chemin
     distanceUnChemin = 0;
 
-
+    #tant qu'il ait possible d'itérer les villes du chemin
     while j < (len(chemin)):
-        #calcul distance temporaire
+        #calcul distance entre 2 villes
         distancetemp = calculDistanceEntre2Villes(chemin[i], chemin[j])
-        #calcul distance totale
+        #distance chemin égale somme des distances entre chaque ville
         distanceUnChemin = distanceUnChemin + distancetemp
         i = i + 1;
         j = j + 1;
 
-        float(distanceUnChemin)
-
+    #renvoi la distance du chemin
     return distanceUnChemin
+
 
 #FONCTION
 #ENSURES : calcul le chemin le plus court parmi tous les chemins possibles
 #PARAM : distances chamins possibles, liste des chemins possibles, liste des ville
 #RETURN : chemin optimal (numero villes), distance chemin optimal
+@timerFonction
 def cheminOptimal(distancesCheminPossibles, cheminsPossibles, villes) :
 
     #initialisation cheminOptimal
     cheminOptimal = []
 
-    #tri des distances par ordre croissant
+    #tri de de la liste des distances par ordre croissant
     distancesCheminPossibles.sort()
 
     #initialisation liste distance temporaire
     listeDistancesTMP = distancesCheminPossibles
 
+    #creation lise distances non triee
     listeDistances = calculDistancesCheminsPossibles(cheminsPossibles)
 
-    #distance la plus courte
+    #distance la plus courte égale 1ere distance de la liste triee par ordre croissant
     distancePlusCourte = listeDistancesTMP[0]
 
     #on recupere le numero du chemin le plus court
@@ -178,7 +209,7 @@ def cheminOptimal(distancesCheminPossibles, cheminsPossibles, villes) :
         #ajout de son numero dans la liste du parcours chemin optimal
         cheminOptimal.append(villes.index(ville))
 
-    #renvoi le chemin optimal
+    #renvoi le chemin optimal et sa distance
     return cheminOptimal, distancePlusCourte
 
 
@@ -195,3 +226,5 @@ def numeroVillePlusProcheVilleDepart(ville):
             listeDesDistance.append(calculDistance)
     indiceVillePlusProche = listeDesDistance.index(min(listeDesDistance)) + 1
     return indiceVillePlusProche
+
+
