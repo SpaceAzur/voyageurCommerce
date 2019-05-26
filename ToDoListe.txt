@@ -5,13 +5,26 @@
 - fonction exploitationFichierCSV qui return la liste des villes (tuples) et le nombre de villes
 - code permutation >>>> fonction permutation
 - code chemins possibles >>> fonction chemins possibles
+- fonction listeComplèteChemins : ajouter ville[0] en début / fin chaque chemin
+- fonction trouver Chemin Optimal + distance
 
 
 ########## Ce qui est en cours ###############
 
-- fonction listeComplèteChemins : ajouter ville[0] en début / fin chaque chemin (cf test Antoine)
+
 
 
 
 ########### Ce que l'on doit faire #############
 
+- question 2 :
+
+    - methode des plus courts chemins
+    - autre methode si possible
+
+- ajouter graphique qui permette de generer le chemin optimal quelle que soit la question
+
+- faire un main qui permette :
+    - lancer le programme
+    - choisir la question à lancer
+    - lancer ou pas le graphique
