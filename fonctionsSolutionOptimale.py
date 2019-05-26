@@ -1,6 +1,7 @@
 import csv
 import math
 import time
+import numpy as np
 from functools import wraps
 from itertools import *
 from fonctionsSolutionOptimale import *
@@ -227,4 +228,23 @@ def numeroVillePlusProcheVilleDepart(ville):
     indiceVillePlusProche = listeDesDistance.index(min(listeDesDistance)) + 1
     return indiceVillePlusProche
 
+@timerFonction
+#FONCTION
+#ENSURES : creer la matrice des distances entre toutes les villes
+#PARAM : liste des villes avec leurs coordonnées
+#RETURN : matrice des distances
+def matriceDistance(listeVille):
+    # Conversion de la liste des villes en tableau
+    x = np.array(listeVille)
+
+    # initialisation de la matrice des distances
+    matDist = np.zeros((len(x), len(x)))
+
+    # Calcul des distances entre chaque ville
+    for i, lig in enumerate(matDist):
+        for j, col in enumerate(lig):
+            matDist[i][j] = calculDistanceEntre2Villes(listeVille[i], listeVille[j])
+
+    #renvoi la matrice des distances
+    return matDist
 
