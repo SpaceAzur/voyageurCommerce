@@ -1,5 +1,5 @@
 import csv
-from mpmath import *
+import math
 from itertools import *
 from fonctionsSolutionOptimale import *
 
@@ -37,9 +37,10 @@ def listeCoordonneesVillesFromCSV (fichierCSV) :
 # ensures : Calcul la distance euclidienne entre deux villes
 # param   : ville de depart et ville d'arrivee, en tuple(x,y)
 # return  : float | distance
-def distanceEntre2Villes(depart, arrivee):
+def calculDistanceEntre2Villes(depart, arrivee):
+
     distance = (float(depart[0])-float(arrivee[0]))**2 + (float(depart[1])-float(arrivee[1]))**2
-    distance = sqrt(distance)
+    distance = math.sqrt(distance)
 
     #renvoi distance entre 2 villes
     return distance
@@ -52,7 +53,7 @@ def distanceEntre2Villes(depart, arrivee):
 def listeDistanceVilleDepartChaqueVille(listeVilles):
     listeDesDistances = []
     for vertice in listeVilles:
-        teste = distanceEntre2Villes(listeVilles[0],vertice)
+        teste = calculDistanceEntre2Villes(listeVilles[0],vertice)
         if(teste != 0.0):
             listeDesDistances.append(teste)
     return listeDesDistances
@@ -98,12 +99,16 @@ def listeCheminsPossibles (listeVilles) :
 
 
 #FONCTION
-#ensures : calcul les distances de tous les chemins
+#ensures : calcul les distances de tous les chemins possibles
 #param : liste de tous les chemins possibles
 #return : liste des distances de tous les chemins
-def calculDistancesCheminsPossible (listeCheminsPossibles) :
-    #initialisatin liste distances chemins possibles
+def calculDistancesCheminsPossibles (listeCheminsPossibles) :
+
+    #initialisation liste distances chemins possibles
     listeDistancesCheminsPossibles = []
+
+    listeIndices = []
+    indiceChemin = 0
 
     #pour chaque chemin de la liste des chemins possibles
     for chemin in listeCheminsPossibles :
@@ -111,11 +116,70 @@ def calculDistancesCheminsPossible (listeCheminsPossibles) :
         #calcul distance du chemin
         distance = calculDistanceUnChemin(chemin)
 
+
         #ajout distance au tableau des distances
         listeDistancesCheminsPossibles.append(distance)
 
+
     return listeDistancesCheminsPossibles
 
+
+#FONCTION
+#Calcul la distance totale d'un chemin donné
+def calculDistanceUnChemin (chemin) :
+
+    i = 0 ;
+    j = 1 ;
+    distancetemp = 0;
+    distanceUnChemin = 0;
+
+
+    while j < (len(chemin)):
+        #calcul distance temporaire
+        distancetemp = calculDistanceEntre2Villes(chemin[i], chemin[j])
+        #calcul distance totale
+        distanceUnChemin = distanceUnChemin + distancetemp
+        i = i + 1;
+        j = j + 1;
+
+        float(distanceUnChemin)
+
+    return distanceUnChemin
+
+#FONCTION
+#ENSURES : calcul le chemin le plus court parmi tous les chemins possibles
+#PARAM : distances chamins possibles, liste des chemins possibles, liste des ville
+#RETURN : chemin optimal (numero villes), distance chemin optimal
+def cheminOptimal(distancesCheminPossibles, cheminsPossibles, villes) :
+
+    #initialisation cheminOptimal
+    cheminOptimal = []
+
+    #tri des distances par ordre croissant
+    distancesCheminPossibles.sort()
+
+    #initialisation liste distance temporaire
+    listeDistancesTMP = distancesCheminPossibles
+
+    listeDistances = calculDistancesCheminsPossibles(cheminsPossibles)
+
+    #distance la plus courte
+    distancePlusCourte = listeDistancesTMP[0]
+
+    #on recupere le numero du chemin le plus court
+    indexChemin = listeDistances.index(distancePlusCourte)
+
+    #on recupere le chemin le plus court avec son numero
+    cheminFinal = cheminsPossibles[indexChemin]
+
+    #pour chaque ville du chemin final
+    for ville in cheminFinal :
+
+        #ajout de son numero dans la liste du parcours chemin optimal
+        cheminOptimal.append(villes.index(ville))
+
+    #renvoi le chemin optimal
+    return cheminOptimal, distancePlusCourte
 
 
 # FONCTION
@@ -126,30 +190,8 @@ def numeroVillePlusProcheVilleDepart(ville):
     listeDesDistance = []
     ville = np.array(ville)
     for (indice, sommet) in enumerate(ville):
-        calculDistance = distanceEntre2Villes(ville[0],sommet)
+        calculDistance = calculDistanceEntre2Villes(ville[0],sommet)
         if(calculDistance != 0.0):
             listeDesDistance.append(calculDistance)
     indiceVillePlusProche = listeDesDistance.index(min(listeDesDistance)) + 1
     return indiceVillePlusProche
-
-
-#FONCTION
-#Calcul la distance totale d'un chemin donné
-def calculDistanceUnChemin (Chemin) :
-    i = 0 ;
-    j = 1 ;
-    chemin = 0 ;
-    ville = 0 ;
-    distancetemp = 0;
-    distanceUnChemin = 0;
-
-
-    while j < (len(Chemin)):
-        #calcul distance temporaire
-        distancetemp = distanceEntre2Villes(Chemin[i], Chemin[j])
-        #calcul distance totale
-        distanceUnChemin = distanceUnChemin + distancetemp
-        i = i + 1;
-        j = j + 1;
-
-    return distanceUnChemin
