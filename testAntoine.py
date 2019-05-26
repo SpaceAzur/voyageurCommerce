@@ -151,15 +151,17 @@ def distance2(depart, arrivee):
 # ensures : Calcul la matrice des distances entre chaque ville
 # returns : matricde de distance
 def matriceDistance(listeVille):
-    global sauve
+
     # Conversion de la liste des villes en tableau
     x = np.array(listeVille)
+
     # initialisation de la matrice de distance
     matDist = np.zeros((len(x),len(x)))
+    
     # Calcul des distances entre chaque ville
     for i, lig in enumerate(matDist):
         for j, col in enumerate(lig):
-            matDist[i][j] = distance2(sauve[i],sauve[j])
+            matDist[i][j] = distance2(listeVille[i],listeVille[j])
 
     return matDist
 
