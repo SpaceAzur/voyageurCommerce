@@ -4,8 +4,7 @@ import csv
 import numpy as np
 import matplotlib as plt
 from itertools import *
-import squarify
-import mlrose
+import tsp
 
 
 # Importe le fichier.csv et le stock dans un tableau ville
@@ -79,7 +78,7 @@ def listeCheminsPossible(villes):
 
     return cheminPossible
 
-print("Nb de chemin possible", len(listeCheminsPossible(ville)),"\n")
+# print("Nb de chemin possible", len(listeCheminsPossible(ville)),"\n")
 
 # Calcul la distance total d un chemin
 def calculDistanceChemin (listeChemin) :
@@ -102,20 +101,20 @@ def calculDistanceChemin (listeChemin) :
     return distanceTotal
 
 # GENERATION DE TOUS LES CHEMINS POSSIBLES
-allPath = listeCheminsPossible(ville)
-allPath = list(allPath) 
-tousChemins = []
-for y in allPath:
-    y = list(y)
-    y.insert(0,sauve[0])
-    y.append(sauve[0])
-    tousChemins.append(y)
+# allPath = listeCheminsPossible(ville)
+# allPath = list(allPath) 
+# tousChemins = []
+# for y in allPath:
+#     y = list(y)
+#     y.insert(0,sauve[0])
+#     y.append(sauve[0])
+#     tousChemins.append(y)
 
 #Liste les distances de toutes les permutations de chemin
-listeTouteDistance = []
-for c in tousChemins:
-    tempo = calculDistanceChemin(c)
-    listeTouteDistance.append(tempo)
+# listeTouteDistance = []
+# for c in tousChemins:
+#     tempo = calculDistanceChemin(c)
+#     listeTouteDistance.append(tempo)
 
 # timeTest = 1000.0
 # for c in tousChemins:
@@ -127,11 +126,52 @@ for c in tousChemins:
 # print('tmp = ', tmp)
 # print("timeTest = ", timeTest)
 
-print("Nombre de distance calculées ", len(listeTouteDistance),"\n")
+# print("Nombre de distance calculées ", len(listeTouteDistance),"\n")
 
-distMin = min(listeTouteDistance)
-indiceDistMin = listeTouteDistance.index(min(listeTouteDistance))
-print("indice du chemin le plus court", indiceDistMin,"\n")
-print("Distance la plus courte ", distMin,"\n")
-print("chemin le plus court\n ", tousChemins[indiceDistMin],"\n")
+# distMin = min(listeTouteDistance)
+# indiceDistMin = listeTouteDistance.index(min(listeTouteDistance))
+# print("indice du chemin le plus court", indiceDistMin,"\n")
+# print("Distance la plus courte ", distMin,"\n")
+# print("chemin le plus court\n ", tousChemins[indiceDistMin],"\n")
 
+
+
+
+#--------------------------------------------------------------------------------------------
+# FONCTION
+# ensures : calcul la distance entre 2 villes, arrondi a 2 decimal
+# return  : distance (float 2 decimals)
+def distance2(depart, arrivee):
+    dist = (float(depart[0])-float(arrivee[0]))**2 + (float(depart[1])-float(arrivee[1]))**2
+    dist = sqrt(dist)
+    dist = round(dist,2)
+    return dist
+
+#FONCTION
+# ensures : Calcul la matrice des distances entre chaque ville
+# return  : matricde de distance
+def matriceDistance(listeVille):
+    # Conversion de la liste des villes en tableau
+    x = np.array(listeVille)
+    # initialisation de la matrice de distance
+    matDist = np.zeros((len(x),len(x)))
+    # Calcul des distances entre chaque ville
+    for i, lig in enumerate(matDist):
+        for j, col in enumerate(lig):
+            matDist[i][j] = distance2(sauve[i],sauve[j])
+
+    return matDist
+
+#FONCTION
+# ensures : Calcul la chemin optimal
+# returns : (tuple) distance du chemin optimal , chemin optimal
+def solutionOptimalTSP(matriceDistance):
+    r = range(len(matriceDistance))
+    dist = {(i, j): matriceDistance[i][j] for i in r for j in r}
+    solution = tsp.tsp(r,dist)
+    return solution
+
+zozo = matriceDistance(sauve)
+zaza = solutionOptimalTSP(zozo)
+
+print("Solution optimale\n", "distance =",zaza[0],"\n Chemin optimal =", zaza[1])
