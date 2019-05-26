@@ -64,7 +64,7 @@ parcours = []
 parcours.append(0)
 
 sauve = ville
-print("Nombre de ville :", len(ville),"\n")
+print("\nNombre de ville :", len(ville),"\n")
 
 # Liste toutes les permutations possibles de chemins
 # Divise la liste en 2 car nous excluons les doublons mirroirs
@@ -157,7 +157,7 @@ def matriceDistance(listeVille):
 
     # initialisation de la matrice de distance
     matDist = np.zeros((len(x),len(x)))
-    
+
     # Calcul des distances entre chaque ville
     for i, lig in enumerate(matDist):
         for j, col in enumerate(lig):
@@ -165,16 +165,25 @@ def matriceDistance(listeVille):
 
     return matDist
 
+
 #FONCTION
 # ensures : Calcul la chemin optimal
 # returns : (tuple) distance du chemin optimal , chemin optimal
 def solutionOptimalTSP(matriceDistance):
+
     r = range(len(matriceDistance))
     dist = {(i, j): matriceDistance[i][j] for i in r for j in r}
     solution = tsp.tsp(r,dist)
+
     return solution
+
 
 zozo = matriceDistance(sauve)
 zaza = solutionOptimalTSP(zozo)
 
-print("Solution optimale\n", "distance =",zaza[0],"\n Chemin optimal =", zaza[1])
+#Rajout de la ville de depart en fin de liste
+zaza[1].insert(len(zaza[1]),0)
+print("matrice de distance \n", zozo)
+print("\nSolution optimale\n", "distance =",zaza[0],"\n Chemin optimal =", zaza[1])
+
+print(tsp.__file__)
