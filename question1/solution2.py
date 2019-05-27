@@ -8,85 +8,25 @@ import time
 import numpy as np
 
 
-liste = [0,1,2,3,4,5,6,7,8,9]
-listeSansMiroir = []
-listeChemins = []
-
-listeVilles = listeCoordonneesVillesFromCSV('../data/test10.csv')
-
+#debut chrono
 start_time = time.time()
 
-#permutations
-listePermutations = list(permutations(liste))
+#recupertion coordonnees villes
+liste_villes = liste_coordonnees_villes_from_csv('../data/test10.csv')
 
-#retrait miroirs
-for chemin in listePermutations :
-    if (chemin[0] < chemin[1]):
-        listeSansMiroir.append(chemin)
+#recuperation nombre villes
+nombre_villes = len(liste_villes)
 
-#retrait non ville depart 0
+#generation chemins hamiltoniens possibles
+liste_chemins_possibles = liste_chemins_possibles_numeros_villes(nombre_villes)
 
-i = 0
-for chemin in listeSansMiroir :
-    if chemin[0] == 0 :
-        listeChemins.append(chemin)
+#calcul distances entre villes
+matrice_distances = matrice_distances(liste_villes)
 
+#calcul plus court chemin | villes parcours
+parcours, distance = calcul_distance_chemin_plus_court_numeros_villes(liste_chemins_possibles, matrice_distances)
 
-#ajout ville retour
-i = 0
-for chemin in listeChemins :
-    listeChemins[i] = listeChemins[i] + (0,)
+print("\n\nparcours : ", parcours)
+print("distance : ", distance)
 
-    i = i + 1
-
-print("listes chemins - %s seconds ---" % (time.time() - start_time))
-
-
-start_time = time.time()
-
-matriceDistances = matriceDistance(listeVilles)
-
-print("generation matrice %s seconds ---" % (time.time() - start_time))
-
-
-start_time = time.time()
-
-distanceChemin = 0
-listeDistances = []
-
-k = 0
-
-for chemin in listeChemins :
-
-    #print(chemin)
-
-    i = 0
-    j = 1
-
-    distanceTMP = 0
-    distanceChemin = 0
-
-    while j < len(chemin) :
-
-        distanceTMP = matriceDistances[ listeChemins[k][i] ] [ listeChemins[k][j] ]
-        #print("distance tmp = ", distanceTMP)
-
-        distanceChemin = distanceChemin + distanceTMP
-        #print("distance chemin : ", distanceChemin)
-
-        #print("")
-        i = i + 1
-        j = j + 1
-
-    #print("distance chemin : ", distanceChemin)
-    listeDistances.append(distanceChemin)
-
-    k = k + 1
-
-#print(len(listeDistances))
-
-listeDistances.sort()
-
-print(listeDistances[0])
-
-print("algo chemin  %s seconds ---" % (time.time() - start_time))
+print("\n timer programme  %s seconds ---" % (time.time() - start_time))
