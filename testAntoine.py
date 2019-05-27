@@ -179,11 +179,45 @@ def solutionOptimalTSP(matriceDistance):
 
 
 zozo = matriceDistance(sauve)
-zaza = solutionOptimalTSP(zozo)
+
+# FONCTION
+# ensures : détermine la valeur minimum d'une liste, en exluant les valeurs présente d'une autre liste
+# returns : (float) valeur minimum 
+def min_gt(seq, visited):
+    return min(v for v in seq if v not in visited)
 
 #Rajout de la ville de depart en fin de liste
-zaza[1].insert(len(zaza[1]),0)
-print("matrice de distance \n", zozo)
-print("\nSolution optimale\n", "distance =",zaza[0],"\n Chemin optimal =", zaza[1])
 
-print(tsp.__file__)
+print("matrice de distance \n", zozo)
+visit = [0,0]
+indVisit = []
+maDistance = []
+for i, lig in enumerate(zozo):
+    for j, col in enumerate(lig):
+        #je cherche la valeur min , excluant les valeurs présentent dans visit[]
+        t = min_gt(lig,visit)
+        #je caste ma ligne en liste
+        gg = list(zozo[i])
+        #je recupere l'index de ma valeur min
+        ggg= gg.index(t)
+    #je sauvegarde ma distance pour calculer le total plus tard
+    maDistance.append(t)
+    #je sauvegarde l'index = mon chemin
+    indVisit.append(ggg)
+    #je garde la valeur i-1 pour mon comparatif suivant
+    visit.append(t)
+    #je supprime la valeur i-2
+    del visit[1]
+
+
+print("indVisit ", indVisit)
+print("visit ", visit)
+print("Distance Total ",round(sum(maDistance),2))
+# reste a faire
+# RAJOUTER UNE DERNIERE CONDITION pour la chemin soit hamiltonien
+# creer une 2ème liste "visited2" qui contiendra les indices des sommets deja visites
+# prendre en compte cette liste visited2 => 
+
+# TO DO
+# 
+
