@@ -5,15 +5,25 @@ from fonctionsSolutionOptimale import *
 #### SOLUTION 1 : utilise les listes #####
 ##########################################
 
+#debut chrono
+start_time = time.time()
 
-listeVilles = listeCoordonneesVillesFromCSV('../sdata/test10.csv')
+#recuperation coordonnees villes
+liste_villes = liste_coordonnees_villes_from_csv('../data/test10.csv')
 
-listeChemins = listeCheminsPossibles(listeVilles)
+#generation chemins hamiltoniens
+liste_chemins = liste_chemins_possibles(liste_villes)
 
-tableauDistances = calculDistancesCheminsPossibles(listeChemins)
+#calcul distances chemins hamiltoniens
+tableauDistances = calcul_distances_chemins_possibles(liste_chemins)
 
-cheminOptimal, distanceCheminOptimal = cheminOptimal(tableauDistances, listeChemins, listeVilles)
+#calcul parcours optimal | distance parcours optimal
+cheminOptimal, distanceCheminOptimal = calcul_chemin_optimal(tableauDistances, liste_chemins, liste_villes)
 
-print("chemin optimal :", cheminOptimal)
-print("")
-print("distance chemin optimal :", distanceCheminOptimal)
+
+print("\n\nchemin optimal : ", cheminOptimal)
+
+print("\ndistance chemin optimal :", distanceCheminOptimal)
+
+
+print("\ntimer programme  %s seconds ---" % (time.time() - start_time))
