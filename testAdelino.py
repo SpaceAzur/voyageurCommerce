@@ -1,91 +1,42 @@
-from fonctionsSolutionOptimale import *
-from itertools import permutations
 import time
-import numpy as np
+from functools import wraps
+from fonctionsSolutionOptimale import *
 
 
-liste = [0,1,2,3,4,5,6,7,8,9]
-listeSansMiroir = []
-listeChemins = []
 
-listeVilles = listeCoordonneesVillesFromCSV('data/test10.csv')
+listeVillesRestantes = liste_coordonnees_villes_from_csv('data/test10.csv')
 
+@timer_fonction
+def calcul_distance_ville_depart_ville_plus_proche (villeDepart, villesRestantes) :
 
-start_time = time.time()
-
-#permutations
-listePermutations = list(permutations(liste))
-
-
-#retrait miroirs
-
-for chemin in listePermutations :
-    if (chemin[0] < chemin[1]):
-        listeSansMiroir.append(chemin)
-
-#retrait non ville depart 0
-
-i = 0
-for chemin in listeSansMiroir :
-    if chemin[0] == 0 :
-        listeChemins.append(chemin)
-
-
-#ajout ville retour
-i = 0
-for chemin in listeChemins :
-    listeChemins[i] = listeChemins[i] + (0,)
-
-    i = i + 1
-
-print("listes chemins - %s seconds ---" % (time.time() - start_time))
-
-
-start_time = time.time()
-
-matriceDistances = matriceDistance(listeVilles)
-
-print("generation matrice %s seconds ---" % (time.time() - start_time))
-
-
-start_time = time.time()
-
-distanceChemin = 0
-listeDistances = []
-
-k = 0
-
-for chemin in listeChemins :
-
-    #print(chemin)
-
+    #compteurs
     i = 0
     j = 1
 
-    distanceTMP = 0
-    distanceChemin = 0
+    #liste des distances
+    listeDistances = []
 
-    while j < len(chemin) :
+    #iteration
+    while j < len(villesRestantes) :
 
-        distanceTMP = matriceDistances[ listeChemins[k][i] ] [ listeChemins[k][j] ]
-        #print("distance tmp = ", distanceTMP)
+        #calcul de la distance entre ville depart toutes les villes restantes
+        distanceEntre2villes = calcul_distance_entre_2_villes(villesRestantes[i], villesRestantes[j])
 
-        distanceChemin = distanceChemin + distanceTMP
-        #print("distance chemin : ", distanceChemin)
+        #ajout de la distance a la liste des distances
+        listeDistances.append(distanceEntre2villes)
 
-        #print("")
-        i = i + 1
+        #on passe a la ville suivante
         j = j + 1
 
-    #print("distance chemin : ", distanceChemin)
-    listeDistances.append(distanceChemin)
+    #tri des distances par ordre croissant
+    listeDistances.sort()
 
-    k = k + 1
+    #distance la plus courte = distance en indice 0
+    dpc = listeDistances[0]
 
-#print(len(listeDistances))
+    return listeDistances
 
-listeDistances.sort()
 
-print(listeDistances[0])
 
-print("algo chemin  %s seconds ---" % (time.time() - start_time))
+print(calcul_distance_ville_depart_ville_plus_proche(listeVillesRestantes[0], listeVillesRestantes))
+
