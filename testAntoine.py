@@ -204,9 +204,9 @@ for i, lig in enumerate(zozo):
     maDistance.append(t)
     #je sauvegarde l'index = mon chemin
     indVisit.append(ggg)
-    #je garde la valeur i-1 pour mon comparatif suivant
+    #je garde la valeur i-1 que j'ai visite pour mon comparatif suivant
     visit.append(t)
-    #je supprime la valeur i-2
+    #je supprime la valeur que j'ai trouve lors de ma visite en i-2
     del visit[1]
 
 
