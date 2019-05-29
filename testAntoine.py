@@ -5,6 +5,8 @@ import numpy as np
 import matplotlib as plt
 from itertools import *
 import tsp
+import sys
+import gc
 
 
 # Importe le fichier.csv et le stock dans un tableau ville
@@ -175,8 +177,8 @@ for i, lig in enumerate(DistanceMatrix):
         #je recupere l'index de ma valeur min
         ggg= gg.index(t)
     #je sauvegarde ma distance pour calculer le total plus tard
-    print("visit ",visit)
-    print("t ", t)
+    # print("visit ",visit)
+    # print("t ", t)
     maDistance.append(t)
     #je sauvegarde l'index = mon chemin
     indVisit.append(ggg)
@@ -188,16 +190,17 @@ for i, lig in enumerate(DistanceMatrix):
 print("indVisit ", indVisit)
 print("visit ", visit)
 print("Distance Total ",round(sum(maDistance),2))
+gc.collect()
+# sys.stdout.write(str(indVisit))
+# sys.stdout.write(str(visit))
+# sys.stdout.write(str(round(sum(maDistance),2)))
 
-# reste a faire
-# RAJOUTER UNE DERNIERE CONDITION pour la chemin soit hamiltonien
-# creer une 2ème liste "visited2" qui contiendra les indices des sommets deja visites
-# prendre en compte cette liste visited2 => 
+ 
 
 # TO DO | FONCTION RECURSIVE
 #---------
 # parcours la ligne 
 # prend la plus petite valeur differente de 0 et absente de la liste visit
 # enregistre son indice dans la liste des ville parcouru (indiceT)=[list.index(element)]
-# tant que  indiceT est absent de indVisit
+# tant que  indiceT est absent de indVisit | tant que indVisit != len(matrixDistance)
 #               - > recommence a la ligne indice T
