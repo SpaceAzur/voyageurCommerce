@@ -100,22 +100,6 @@ def calculDistanceChemin (listeChemin) :
     # + distance(sauve[0],listeChemin[i]) 
     return distanceTotal
 
-# GENERATION DE TOUS LES CHEMINS POSSIBLES
-# allPath = listeCheminsPossible(ville)
-# allPath = list(allPath) 
-# tousChemins = []
-# for y in allPath:
-#     y = list(y)
-#     y.insert(0,sauve[0])
-#     y.append(sauve[0])
-#     tousChemins.append(y)
-
-#Liste les distances de toutes les permutations de chemin
-# listeTouteDistance = []
-# for c in tousChemins:
-#     tempo = calculDistanceChemin(c)
-#     listeTouteDistance.append(tempo)
-
 # timeTest = 1000.0
 # for c in tousChemins:
 #     tmp = calculDistanceChemin(c)
@@ -123,19 +107,6 @@ def calculDistanceChemin (listeChemin) :
 #         tmp = timeTest
 #     else:
 #         timeTest = tmp
-# print('tmp = ', tmp)
-# print("timeTest = ", timeTest)
-
-# print("Nombre de distance calculées ", len(listeTouteDistance),"\n")
-
-# distMin = min(listeTouteDistance)
-# indiceDistMin = listeTouteDistance.index(min(listeTouteDistance))
-# print("indice du chemin le plus court", indiceDistMin,"\n")
-# print("Distance la plus courte ", distMin,"\n")
-# print("chemin le plus court\n ", tousChemins[indiceDistMin],"\n")
-
-
-
 
 #--------------------------------------------------------------------------------------------
 # FONCTION
@@ -165,7 +136,6 @@ def matriceDistance(listeVille):
 
     return matDist
 
-
 #FONCTION
 # ensures : Calcul la chemin optimal
 # returns : (tuple) distance du chemin optimal , chemin optimal
@@ -178,7 +148,7 @@ def solutionOptimalTSP(matriceDistance):
     return solution
 
 
-zozo = matriceDistance(sauve)
+DistanceMatrix = matriceDistance(sauve)
 
 # FONCTION
 # ensures : détermine la valeur minimum d'une liste, en exluant les valeurs présente d'une autre liste
@@ -188,36 +158,46 @@ def min_gt(seq, visited):
 
 #Rajout de la ville de depart en fin de liste
 
-print("matrice de distance \n", zozo)
-visit = [0,0]
+print("matrice de distance \n", DistanceMatrix)
+visit = [0]
 indVisit = []
 maDistance = []
-for i, lig in enumerate(zozo):
+for i, lig in enumerate(DistanceMatrix):
     for j, col in enumerate(lig):
+        #simuler nouvelle liste "visit" de la ligne i
+        # for k, node in enumerate(zozo[i]):
+        if j in indVisit:
+            visit.append(DistanceMatrix[i][j]) 
         #je cherche la valeur min , excluant les valeurs présentent dans visit[]
         t = min_gt(lig,visit)
         #je caste ma ligne en liste
-        gg = list(zozo[i])
+        gg = list(DistanceMatrix[i])
         #je recupere l'index de ma valeur min
         ggg= gg.index(t)
     #je sauvegarde ma distance pour calculer le total plus tard
+    print("visit ",visit)
+    print("t ", t)
     maDistance.append(t)
     #je sauvegarde l'index = mon chemin
     indVisit.append(ggg)
     #je garde la valeur i-1 que j'ai visite pour mon comparatif suivant
     visit.append(t)
     #je supprime la valeur que j'ai trouve lors de ma visite en i-2
-    del visit[1]
-
+    del visit[2:]
 
 print("indVisit ", indVisit)
 print("visit ", visit)
 print("Distance Total ",round(sum(maDistance),2))
+
 # reste a faire
 # RAJOUTER UNE DERNIERE CONDITION pour la chemin soit hamiltonien
 # creer une 2ème liste "visited2" qui contiendra les indices des sommets deja visites
 # prendre en compte cette liste visited2 => 
 
-# TO DO
-# 
-
+# TO DO | FONCTION RECURSIVE
+#---------
+# parcours la ligne 
+# prend la plus petite valeur differente de 0 et absente de la liste visit
+# enregistre son indice dans la liste des ville parcouru (indiceT)=[list.index(element)]
+# tant que  indiceT est absent de indVisit
+#               - > recommence a la ligne indice T
