@@ -7,7 +7,17 @@ from itertools import *
 import tsp
 import sys
 import gc
+import time
 
+def timer_fonction(f):
+    def wrap(*args):
+        time1 = time.time()
+        ret = f(*args)
+        time2 = time.time()
+        print('{:s} function took {:.3f} ms'.format(f.__name__, (time2-time1)*1000.0))
+
+        return ret
+    return wrap
 
 # Importe le fichier.csv et le stock dans un tableau ville
 # fichier par defaut pour l'instant = test10.csv
@@ -177,8 +187,6 @@ for i, lig in enumerate(DistanceMatrix):
         #je recupere l'index de ma valeur min
         ggg= gg.index(t)
     #je sauvegarde ma distance pour calculer le total plus tard
-    # print("visit ",visit)
-    # print("t ", t)
     maDistance.append(t)
     #je sauvegarde l'index = mon chemin
     indVisit.append(ggg)
@@ -187,20 +195,47 @@ for i, lig in enumerate(DistanceMatrix):
     #je supprime la valeur que j'ai trouve lors de ma visite en i-2
     del visit[2:]
 
-print("indVisit ", indVisit)
-print("visit ", visit)
 print("Distance Total ",round(sum(maDistance),2))
-gc.collect()
-# sys.stdout.write(str(indVisit))
-# sys.stdout.write(str(visit))
-# sys.stdout.write(str(round(sum(maDistance),2)))
 
- 
+# FONCTION RECURSIVE PLUS COURT CHEMIN 
+@timer_fonction
+def recursiveChemin(matriceDeDistance, visited, indiceVisites, indiceEnCours, compteurDistance):
 
-# TO DO | FONCTION RECURSIVE
-#---------
-# parcours la ligne 
-# prend la plus petite valeur differente de 0 et absente de la liste visit
-# enregistre son indice dans la liste des ville parcouru (indiceT)=[list.index(element)]
-# tant que  indiceT est absent de indVisit | tant que indVisit != len(matrixDistance)
-#               - > recommence a la ligne indice T
+    villa = list(matriceDeDistance[indiceEnCours])
+
+    for k, ville in enumerate(villa):
+    # for k, ville in enumerate(matriceDeDistance[indiceEnCours]):
+        if k in indiceVisites:
+            visited.append(ville)
+    # je recupere la distance minimum hors visited
+    mini = min_gt(villa,visited)
+    # je recupere l'indice de la valeur minimum = prochaine ville
+    inda = villa.index(mini)
+    # je sauvegarde la valeur minimum dans visited pour ne pas boucler dessus
+    visited.append(mini)
+    # je cumule la distance
+    compteurDistance = compteurDistance + mini
+    # je sauvegarde la ville comme parcourue
+    indiceVisites.append(inda)
+    print("\nvilla ",indiceEnCours, " ", villa)
+    print("mini ", mini, "indiceMin ", inda)
+    print("visited ", visited)
+    print("indiceVisites ", indiceVisites)
+    print("distanceCumul ", compteurDistance)
+    del visited[2:]
+    print("visited2 ", visited)
+    while len(indiceVisites) != len(matriceDeDistance):
+        recursiveChemin(matriceDeDistance, visited, indiceVisites, inda, compteurDistance)
+    
+    return indiceVisites, compteurDistance
+
+visited = [0.0]
+indiceVisites= []
+distanceTotale = 0.0
+Recu = recursiveChemin(DistanceMatrix, visited, indiceVisites, 0, distanceTotale)
+print("recursive ", Recu)
+
+testa = distance2(ville[2],ville[9])
+print(testa)
+testo = distance2(ville[7],ville[9])
+print(testo)
