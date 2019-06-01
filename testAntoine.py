@@ -214,7 +214,7 @@ def recursiveChemin(matriceDeDistance, visited, indiceVisites, indiceEnCours, co
     # je sauvegarde la valeur minimum dans visited pour ne pas boucler dessus
     visited.append(mini)
     # je cumule la distance
-    compteurDistance = compteurDistance + mini
+    compteurDistance.append(mini)
     # je sauvegarde la ville comme parcourue
     indiceVisites.append(inda)
     print("\nvilla ",indiceEnCours, " ", villa)
@@ -223,15 +223,15 @@ def recursiveChemin(matriceDeDistance, visited, indiceVisites, indiceEnCours, co
     print("indiceVisites ", indiceVisites)
     print("distanceCumul ", compteurDistance)
     del visited[2:]
-    print("visited2 ", visited)
+    # print("visited2 ", visited)
     while len(indiceVisites) != len(matriceDeDistance):
         recursiveChemin(matriceDeDistance, visited, indiceVisites, inda, compteurDistance)
     
-    return indiceVisites, compteurDistance
+    return indiceVisites, sum(compteurDistance)
 
 visited = [0.0]
 indiceVisites= []
-distanceTotale = 0.0
+distanceTotale = []
 Recu = recursiveChemin(DistanceMatrix, visited, indiceVisites, 0, distanceTotale)
 print("recursive ", Recu)
 
