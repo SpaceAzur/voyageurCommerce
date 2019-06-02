@@ -8,6 +8,7 @@ from itertools import permutations #pour generer les permutations
 import matplotlib.pyplot as plt #pour afficher les villes et le parcours (graphique)
 
 
+
 #FONCTION
 #ENSURES : calcul le temps d'execution d'une fonction
 #USAGE : ajouter @timing devant la fonction
@@ -18,7 +19,7 @@ def timer_fonction(f):
         time1 = time.time()
         ret = f(*args)
         time2 = time.time()
-        print('{:s} function took {:.3f} ms'.format(f.__name__, (time2-time1)*1000.0))
+        print('{:s} Temps d\'exécution de la fonction :  {:.3f} millisecondes'.format(f.__name__, (time2-time1)*1000.0))
 
         return ret
     return wrap
@@ -61,7 +62,7 @@ def convertion_liste_coordonnees_str_liste_coordonnes_float (liste_coordonees_st
     #sert a parcourir les indices
     i = 0
     #pour chaque coordonnee x et y de type str
-    for coordonnee_ville_str in coordonnees_brutes :
+    for coordonnee_ville_str in liste_coordonees_str :
         #converstion x str en x float et ajour a la liste
         liste_coordonnes_villes_float[i].append(float(coordonnee_ville_str[0]))
         # converstion y str en y float et ajour a la liste
