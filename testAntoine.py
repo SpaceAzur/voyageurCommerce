@@ -168,62 +168,57 @@ DistanceMatrix = matriceDistance(sauve)
 def min_gt(seq, visited):
     return min(v for v in seq if v not in visited)
 
-#Rajout de la ville de depart en fin de liste
 
 print("matrice de distance \n", DistanceMatrix)
-visit = [0]
-indVisit = []
-maDistance = []
-for i, lig in enumerate(DistanceMatrix):
-    for j, col in enumerate(lig):
-        #simuler nouvelle liste "visit" de la ligne i
-        # for k, node in enumerate(zozo[i]):
-        if j in indVisit:
-            visit.append(DistanceMatrix[i][j]) 
-        #je cherche la valeur min , excluant les valeurs présentent dans visit[]
-        t = min_gt(lig,visit)
-        #je caste ma ligne en liste
-        gg = list(DistanceMatrix[i])
-        #je recupere l'index de ma valeur min
-        ggg= gg.index(t)
-    #je sauvegarde ma distance pour calculer le total plus tard
-    maDistance.append(t)
-    #je sauvegarde l'index = mon chemin
-    indVisit.append(ggg)
-    #je garde la valeur i-1 que j'ai visite pour mon comparatif suivant
-    visit.append(t)
-    #je supprime la valeur que j'ai trouve lors de ma visite en i-2
-    del visit[2:]
 
-print("Distance Total ",round(sum(maDistance),2))
+#----------------------------------------------------------------------------
+# ESSAI NON-CONCLUANT 
+# visit = [0]
+# indVisit = []
+# maDistance = []
+# for i, lig in enumerate(DistanceMatrix):
+#     for j, col in enumerate(lig):
+#         #simuler nouvelle liste "visit" de la ligne i
+#         # for k, node in enumerate(zozo[i]):
+#         if j in indVisit:
+#             visit.append(DistanceMatrix[i][j]) 
+#         #je cherche la valeur min , excluant les valeurs présentent dans visit[]
+#         t = min_gt(lig,visit)
+#         #je caste ma ligne en liste
+#         gg = list(DistanceMatrix[i])
+#         #je recupere l'index de ma valeur min
+#         ggg= gg.index(t)
+#     #je sauvegarde ma distance pour calculer le total plus tard
+#     maDistance.append(t)
+#     #je sauvegarde l'index = mon chemin
+#     indVisit.append(ggg)
+#     #je garde la valeur i-1 que j'ai visite pour mon comparatif suivant
+#     visit.append(t)
+#     #je supprime la valeur que j'ai trouve lors de ma visite en i-2
+#     del visit[2:]
+
+# print("Distance Total ",round(sum(maDistance),2))
+#---------------------------------------------------------------------------
+
 
 # FONCTION RECURSIVE PLUS COURT CHEMIN 
-@timer_fonction
+# ALGORITHME GLOUTON
+#@timer_fonction
 def recursiveChemin(matriceDeDistance, visited, indiceVisites, indiceEnCours, compteurDistance):
 
     villa = list(matriceDeDistance[indiceEnCours])
 
     for k, ville in enumerate(villa):
-    # for k, ville in enumerate(matriceDeDistance[indiceEnCours]):
         if k in indiceVisites:
             visited.append(ville)
-    # je recupere la distance minimum hors visited
-    mini = min_gt(villa,visited)
-    # je recupere l'indice de la valeur minimum = prochaine ville
-    inda = villa.index(mini)
-    # je sauvegarde la valeur minimum dans visited pour ne pas boucler dessus
-    visited.append(mini)
-    # je cumule la distance
-    compteurDistance.append(mini)
-    # je sauvegarde la ville comme parcourue
-    indiceVisites.append(inda)
-    print("\nvilla ",indiceEnCours, " ", villa)
-    print("mini ", mini, "indiceMin ", inda)
-    print("visited ", visited)
-    print("indiceVisites ", indiceVisites)
-    print("distanceCumul ", compteurDistance)
-    del visited[2:]
-    # print("visited2 ", visited)
+
+    mini = min_gt(villa,visited)     # je recupere la distance minimum hors visited
+    inda = villa.index(mini)         # je recupere l'indice de la valeur minimum = prochaine ville
+    visited.insert(1,mini)           # je sauvegarde la valeur minimum dans visited pour ne pas boucler dessus
+    compteurDistance.append(mini)    # je cumule la distance
+    indiceVisites.append(inda)       # je sauvegarde la ville comme parcourue
+    del visited[2:]                  # je reinitialise visited pour la prochaine iteration, en gardant le min de l iteration precedente
+
     while len(indiceVisites) != len(matriceDeDistance):
         recursiveChemin(matriceDeDistance, visited, indiceVisites, inda, compteurDistance)
     
@@ -233,9 +228,7 @@ visited = [0.0]
 indiceVisites= []
 distanceTotale = []
 Recu = recursiveChemin(DistanceMatrix, visited, indiceVisites, 0, distanceTotale)
-print("recursive ", Recu)
+print("\nGLOUTON 'plus proche voisin' recursive ", Recu)
 
-testa = distance2(ville[2],ville[9])
-print(testa)
-testo = distance2(ville[7],ville[9])
-print(testo)
+# NOUVELLE PISTE https://interstices.info/le-probleme-du-voyageur-de-commerce/
+# => tester algorithme de descente locale
