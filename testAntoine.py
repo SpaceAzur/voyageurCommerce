@@ -23,7 +23,10 @@ def timer_fonction(f):
 # fichier par defaut pour l'instant = test10.csv
 ville = []
 
-with open('test10.csv') as csv_file:
+#debut chrono
+start_time = time.time()
+
+with open('data/test10.csv') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     line_count = 0
     for row in csv_reader:
@@ -232,3 +235,5 @@ print("\nGLOUTON 'plus proche voisin' recursive ", Recu)
 
 # NOUVELLE PISTE https://interstices.info/le-probleme-du-voyageur-de-commerce/
 # => tester algorithme de descente locale
+
+print("\n timer programme  %s seconds ---" % (time.time() - start_time))
