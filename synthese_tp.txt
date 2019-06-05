@@ -1,0 +1,71 @@
+Solution 1 :
+
+data structures :
+
+-listes
+
+
+fonctions : 
+
+- liste_coordonnees_villes_from_csv
+	- fichier csv 
+	- listes des villes sous forme de tuples xy
+
+- liste_chemins_possibles_tuples_coordonnees
+	- listes des villes sous forme de tuples xy
+	- listes de chemins possibles sous forme de tuples xy 
+
+- calcul_distances_chemins_possibles
+	- listes de chemins possibles sous forme de tuples xy
+	- liste des distances de tous les chemins possibles
+
+- calcul_chemin_optimal_methode_liste
+	- listes des villes sous forme de tuples xy
+	- listes de chemins possibles sous forme de tuples xy 
+	- liste des distances de tous les chemins possibles
+
+
+
+
+Solution 2 : 
+
+data structures :
+
+- listes
+- matrice
+
+
+fonctions :
+
+- liste_coordonnees_villes_from_csv
+	- fichier csv 
+	- listes des villes sous forme de tuples xy
+
+liste_chemins_possibles_numeros_villes
+	- nombre de villes
+	- listes des chemins possibles sous forme d'indices
+
+matrice_distances
+	- listes des villes sous forme de tuples xy
+	- matrice des distances entre villes
+
+calcul_distance_chemin_plus_court_numeros_villes
+	- listes des chemins possibles sous forme d'indices 
+	- matrice des distances entre villes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
