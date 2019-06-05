@@ -1,13 +1,9 @@
-import heapq
 from mpmath import *
-import csv
 import numpy as np
 import matplotlib as plt
 from itertools import *
-import tsp
-import sys
-import gc
-import time
+import tsp, sys, gc, time, heapq, csv
+
 
 def timer_fonction(f):
     def wrap(*args):

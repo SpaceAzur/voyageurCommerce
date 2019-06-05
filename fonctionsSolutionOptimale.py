@@ -6,7 +6,7 @@ import re #pour les expresions regulieres
 from functools import wraps #pour monitorer les fonctions
 from itertools import permutations #pour generer les permutations
 import matplotlib.pyplot as plt #pour afficher les villes et le parcours (graphique)
-
+import tsp
 
 
 #FONCTION
@@ -493,3 +493,44 @@ def dessiner_parcours_voyageur_commerce (coordonnees_float, chemin_numero_ville)
 
     #affiche le graphique
     plt.show()
+
+
+# FONCTION RECURSIVE PLUS COURT CHEMIN 
+# ALGORITHME GLOUTON
+#@timer_fonction
+def recursiveChemin(matriceDeDistance, visited, indiceVisites, indiceEnCours, compteurDistance):
+
+    villa = list(matriceDeDistance[indiceEnCours])
+
+    for k, ville in enumerate(villa):
+        if k in indiceVisites:
+            visited.append(ville)
+
+    mini = min_gt(villa,visited)     # je recupere la distance minimum hors visited
+    inda = villa.index(mini)         # je recupere l'indice de la valeur minimum = prochaine ville
+    visited.insert(1,mini)           # je sauvegarde la valeur minimum dans visited pour ne pas boucler dessus
+    compteurDistance.append(mini)    # je cumule la distance
+    indiceVisites.append(inda)       # je sauvegarde la ville comme parcourue
+    del visited[2:]                  # je reinitialise visited pour la prochaine iteration, en gardant le min de l iteration precedente
+
+    while len(indiceVisites) != len(matriceDeDistance):
+        recursiveChemin(matriceDeDistance, visited, indiceVisites, inda, compteurDistance)
+    
+    return indiceVisites, sum(compteurDistance)
+
+# FONCTION
+# ensures : détermine la valeur minimum d'une liste, en exluant les valeurs présente d'une autre liste
+# returns : (float) valeur minimum 
+def min_gt(seq, visited):
+    return min(v for v in seq if v not in visited)
+
+#FONCTION
+# ensures : Calcul la chemin optimal
+# returns : (tuple) distance du chemin optimal , chemin optimal
+def solutionOptimalTSP(matriceDistance):
+
+    r = range(len(matriceDistance))
+    dist = {(i, j): matriceDistance[i][j] for i in r for j in r}
+    solution = tsp.tsp(r,dist)
+
+    return solution
