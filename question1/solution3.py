@@ -35,12 +35,22 @@ start_time = time.time()
 #calcul distances entre villes
 matrice_distances = matrice_distances(liste_villes)
 
-chemin, distance = solutionOptimalTSP(matrice_distances)
+distance, chemin = solutionOptimalTSP(matrice_distances)
 
 chrono = (round((time.time() - start_time), 4))
 
-print("\n\nLe chemin le plus court est  : ", chemin)
+print("\n\nLe chemin le plus court est  : ", convertion_chemin_liste_pour_user(chemin))
 
 print("\nSa distance est de ", distance, "unités. ")
 
 print("\nTemps d'exécution du programme : %s secondes " %chrono)
+
+
+
+#Affichage chemin
+
+#converti ces coordonnees en float (besoin graphique)
+coordonnees_float = convertion_liste_coordonnees_str_liste_coordonnes_float(liste_villes)
+
+#affichage ville + parcours
+dessiner_parcours_voyageur_commerce(coordonnees_float, convertion_chemin_liste_pour_user(chemin))
