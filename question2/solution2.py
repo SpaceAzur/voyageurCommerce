@@ -8,7 +8,7 @@ from fonctionsSolutionOptimale import *
 
 print("##################################################\n"
       "################## SOLUTION 1 ####################\n"
-      "################################################## \n\n")
+      "###### Algorithme du plus court chemin ########### \n\n")
 
 #demande choix liste user
 choix_user = demande_choix_ville()
@@ -34,8 +34,18 @@ chemin, distance = recursiveChemin(matrice_distances, visited, indiceVisites, 0,
 
 chrono = (round((time.time() - start_time), 4))
 
-print("\n Algorithme glouton 'le plus proche voisin' : ", chemin)
+print("\nLe chemin le plus court est  : ", convertion_chemin_liste_pour_user(chemin))
 
-print("Sa distance est de :", distance)
+print("Sa distance est de :", round((distance), 4))
 
 print("\nTemps d'exécution du programme : %s secondes " %chrono)
+
+
+
+#Affichage chemin
+
+#converti ces coordonnees en float (besoin graphique)
+coordonnees_float = convertion_liste_coordonnees_str_liste_coordonnes_float(liste_villes)
+
+#affichage ville + parcours
+dessiner_parcours_voyageur_commerce(coordonnees_float, convertion_chemin_liste_pour_user(chemin))
