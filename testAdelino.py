@@ -1,42 +1,57 @@
-import time
-from functools import wraps
-from fonctionsSolutionOptimale import *
+def algorithme_permutation_heap(liste_nombres, n):
+    # variable pour swap
+    tmp = 0
+
+    if n > 2:
+        # print(n, "> 2")
+        # print("Appel recursif haut ")
+        algorithme_permutation_heap(liste_nombres, n - 1)
+
+    # ETAPE 2
+    for i in range(0, n - 1):
+        # print("\n\nfor ", i)
+        # print("valeur n : ", n)
+        # print("valeur i : ", i)
+
+        if n % 2 != 0:
+            # print("if n", liste_nombres[n-1])
+            # print("Impair")
+            # print("Avant swap : ",liste_nombres[0], "et", liste_nombres[n - 1] )
+
+            # print(liste_nombres)
+            tmp = liste_nombres[0]
+            liste_nombres[0] = liste_nombres[n - 1]
+            liste_nombres[n - 1] = tmp
+
+            # print("Apres swap : ",liste_nombres[0], "et", liste_nombres[n - 1] )
+            # compteur_permutation = compteur_permutation + 1
+            # print(liste_nombres)
+
+        # print("")
+
+        else:
+            # print("pair")
+            # print("Avant swap : ", liste_nombres[i], "et", liste_nombres[n - 1] )
+            # print(liste_nombres)
+            tmp = liste_nombres[i]
+            liste_nombres[i] = liste_nombres[n - 1]
+            liste_nombres[n - 1] = tmp
+
+            # print("Apres swap ")
+            # print(liste_nombres)
+            # print("")
+
+        if n > 2:
+            # print("valeur n : ", n)
+            # print("go rec 2")
+            algorithme_permutation_heap(liste_nombres, n - 1)
+
+        # PROCESS
+
+    return
 
 
 
-listeVillesRestantes = liste_coordonnees_villes_from_csv('data/test10.csv')
-
-@timer_fonction
-def calcul_distance_ville_depart_ville_plus_proche (villeDepart, villesRestantes) :
-
-    #compteurs
-    i = 0
-    j = 1
-
-    #liste des distances
-    listeDistances = []
-
-    #iteration
-    while j < len(villesRestantes) :
-
-        #calcul de la distance entre ville depart toutes les villes restantes
-        distanceEntre2villes = calcul_distance_entre_2_villes(villesRestantes[i], villesRestantes[j])
-
-        #ajout de la distance a la liste des distances
-        listeDistances.append(distanceEntre2villes)
-
-        #on passe a la ville suivante
-        j = j + 1
-
-    #tri des distances par ordre croissant
-    listeDistances.sort()
-
-    #distance la plus courte = distance en indice 0
-    dpc = listeDistances[0]
-
-    return listeDistances
 
 
-
-print(calcul_distance_ville_depart_ville_plus_proche(listeVillesRestantes[0], listeVillesRestantes))
 
