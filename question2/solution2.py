@@ -35,6 +35,9 @@ chemin, distance = recursiveChemin(matrice_distances, visited, indiceVisites, 0,
 chrono = (round((time.time() - start_time), 4))
 
 chemin.insert(0,0)
+chemin.append(0)
+
+print(chemin)
 
 print("\nLe chemin le plus court est  : ", convertion_chemin_liste_pour_user(chemin))
 
