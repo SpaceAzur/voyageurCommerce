@@ -8,7 +8,6 @@ from itertools import permutations #pour generer les permutations
 import matplotlib.pyplot as plt #pour afficher les villes et le parcours (graphique)
 import tsp
 
-
 #FONCTION
 #ENSURES : calcul le temps d'execution d'une fonction
 #USAGE : ajouter @timing devant la fonction
@@ -19,7 +18,7 @@ def timer_fonction(f):
         time1 = time.time()
         ret = f(*args)
         time2 = time.time()
-        print('{:s} Temps d\'exécution de la fonction :  {:.3f} millisecondes'.format(f.__name__, (time2-time1)*1000.0))
+        print('\n{:s} Temps d\'exécution de la fonction :  {:.3f} millisecondes'.format(f.__name__, (time2-time1)*1000.0))
 
         return ret
     return wrap
@@ -27,8 +26,8 @@ def timer_fonction(f):
 
 #FONCTION
 # ensures : creation de la liste de toutes les villes à visiter
-# param   : fichier CSV
-# return dans l'ordre  : liste des villes (tuples X Y)
+# param   : numero de fichier
+# return dans l'ordre  : liste des villes (tuples de coordonnees XY)
 @timer_fonction
 def liste_coordonnees_villes_from_csv (fichierCSV) :
     #initialisation liste coordonnees villes
@@ -49,29 +48,6 @@ def liste_coordonnees_villes_from_csv (fichierCSV) :
     #renvoi liste coordonnees villes
     return liste_coordonnees_villes_from_csv
 
-
-#FONCTION
-#ENSURES : converti une liste de coordonnes de type str en liste de type float
-#PARAM: liste de coordonnees de villes au format str
-#RETURN : liste de coordonnees de villes au format float
-def convertion_liste_coordonnees_str_liste_coordonnes_float (liste_coordonees_str) :
-
-    #liste qui va recevoir les coordonnees des villes converties en type float
-    liste_coordonnes_villes_float = [[] * nombre for nombre in range(0, len(liste_coordonees_str))]
-
-    #sert a parcourir les indices
-    i = 0
-    #pour chaque coordonnee x et y de type str
-    for coordonnee_ville_str in liste_coordonees_str :
-        #converstion x str en x float et ajour a la liste
-        liste_coordonnes_villes_float[i].append(float(coordonnee_ville_str[0]))
-        # converstion y str en y float et ajour a la liste
-        liste_coordonnes_villes_float[i].append(float(coordonnee_ville_str[1]))
-        #indice suivant
-        i = i + 1
-
-    #renvoie la liste des coordonnees des villes de type floar
-    return liste_coordonnes_villes_float
 
 #FONCTION
 #ENSURES : converti une liste de coordonnes de type str en liste de type float
@@ -118,7 +94,7 @@ def calcul_distance_entre_2_villes(depart, arrivee):
 # param   : liste des villes (tuples) créées par la fonction correspondante
 # return  : liste chemins possibles SANS miroir avec ville 0 comme ville depart
 @timer_fonction
-def liste_chemins_possibles(listeVilles) :
+def liste_chemins_possibles_tuples_coordonnees(listeVilles) :
     #liste chemins sans filtre
     cheminsSansFiltre = list(permutations(listeVilles))
 
@@ -169,21 +145,20 @@ def liste_chemins_possibles_numeros_villes(nombre_villes):
     liste_chemins_possibles = []
 
     # liste des permutations des chemins sans filtre
-    liste_permutations_sans_filtre = list(permutations(liste))
+    liste_permutations_sans_filtre = (permutations(liste))
 
     # retrait chemins miroirs
     for chemin in liste_permutations_sans_filtre:
         if (chemin[0] < chemin[1]):
             liste_sans_miroir.append(chemin)
 
-    # retrait chemins sans ville depart ville 0
     i = 0
     # pour chaque chemin
     for chemin in liste_sans_miroir:
-        # si chemin commentce par ville 0
-        # ajout chemin liste chemins possibles
+        # si chemin commence par ville 0
         if chemin[0] == 0:
             liste_chemins_possibles.append(chemin)
+            #ajout ville 0 comme ville retour a chaque chemin
             liste_chemins_possibles[i] = liste_chemins_possibles[i] + (0,)
 
         i = i + 1
@@ -192,13 +167,57 @@ def liste_chemins_possibles_numeros_villes(nombre_villes):
     return liste_chemins_possibles
 
 
+#FONCTION
+#ENSURES : algorithme de permutation de Heap
+#PARAM : liste de villes sous forme de numeros de villes
+#RETURN : liste de toute les permutations possibles
+#@timer_fonction
+def algorithme_permutation_heap(liste_numeros_villes):
+    #nombre de villes
+    nombre_villes = len(liste_numeros_villes)
+    #garde l'etat de la pile
+    c = [0] * nombre_villes
+    #liste qui contient chaque generation de permutation
+    permutation = list(liste_numeros_villes)
+    #generateur qui permet d'envoyer la permutation
+    yield permutation
+    #copie de la liste pour permettre export
+    permutation = permutation[:]
+    i = 1
+    #boucle
+    while i < nombre_villes:
+        if c[i] < i:
+            #si "n" est pair
+            if i % 2 == 0:
+                #on permute 1 et n
+                temp = permutation[0]
+                permutation[0] = permutation[i]
+                permutation[i] = temp
+            #si n est impair
+            else:
+                #on permute 1 et n
+                temp = permutation[c[i]]
+                permutation[c[i]] = permutation[i]
+                permutation[i] = temp
+            # generateur qui permet d'envoyer la permutation
+            yield permutation
+            permutation = permutation[:]
+            # copie de la liste pour permettre export
+            c[i] += 1
+            i = 1
+        else:
+            c[i] = 0
+            i += 1
+
+    return
+
 
 #FONCTION
 #ensures : calcul les distances de tous les chemins possibles
 #param : liste de tous les chemins possibles
 #return : liste des distances de tous les chemins
 @timer_fonction
-def calcul_distances_chemins_possibles (liste_chemins_possibles) :
+def calcul_distances_chemins_possibles(liste_chemins_possibles) :
 
     #initialisation liste distances chemins possibles
     liste_distances_cheminsPossibles = []
@@ -207,7 +226,7 @@ def calcul_distances_chemins_possibles (liste_chemins_possibles) :
     indiceChemin = 0
 
     #pour chaque chemin de la liste des chemins possibles
-    for chemin in liste_chemins_possibles :
+    for indice_chemin, chemin in enumerate(liste_chemins_possibles) :
 
         #calcul distance du chemin
         distance = calcul_distance_un_chemin(chemin)
@@ -250,10 +269,10 @@ def calcul_distance_un_chemin (chemin) :
 
 #FONCTION
 #ENSURES : calcul le chemin le plus court parmi tous les chemins possibles
-#PARAM : distances chamins possibles, liste des chemins possibles, liste des ville
+#PARAM : distances chemins possibles, liste des chemins possibles, liste des ville
 #RETURN : chemin optimal (numero villes), distance chemin optimal
 @timer_fonction
-def calcul_chemin_optimal(distancesCheminPossibles, cheminsPossibles, villes) :
+def calcul_chemin_optimal_methode_liste(distancesCheminPossibles, cheminsPossibles, villes) :
 
     #initialisation cheminOptimal
     cheminOptimal = []
@@ -340,7 +359,7 @@ def matrice_distances(listeVille):
 #FONCTION
 #ENSURES : calcul distance plus court chemin avec numeros villes
 #PARAM : listes chemins avec numeros villes | matrice des distances
-#RETURN : chemin hmiltonien | distance chemin hamiltonien
+#RETURN : chemin hamiltonien | distance chemin hamiltonien
 @timer_fonction
 def calcul_distance_chemin_plus_court_numeros_villes (liste_chemins, matrice_distances) :
 
@@ -389,8 +408,7 @@ def calcul_distance_chemin_plus_court_numeros_villes (liste_chemins, matrice_dis
 
     #recuperation villes parcours
     index_parcours_ville = liste_distances_2.index(distance_parcours)
-    parcours_ville = liste_chemins[index_parcours_ville]
-
+    parcours_ville= list(liste_chemins[index_parcours_ville])
     #renvoie la distance du chemin le plus court
     return parcours_ville, distance_parcours
 
