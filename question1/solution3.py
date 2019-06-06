@@ -39,9 +39,11 @@ distance, chemin = solutionOptimalTSP(matrice_distances)
 
 chrono = (round((time.time() - start_time), 4))
 
+chemin.append(0)
+
 print("\n\nLe chemin le plus court est  : ", convertion_chemin_liste_pour_user(chemin))
 
-print("\nSa distance est de ", distance, "unités. ")
+print("\nSa distance est de ", round((distance), 4), "unités. ")
 
 print("\nTemps d'exécution du programme : %s secondes " %chrono)
 
