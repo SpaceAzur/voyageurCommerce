@@ -48,9 +48,6 @@ print("\nSa distance est de ", round((distance), 4), "unités. ")
 print("\nTemps d'exécution du programme : %s secondes " %chrono)
 
 
-
-#Affichage chemin
-
 #converti ces coordonnees en float (besoin graphique)
 coordonnees_float = convertion_liste_coordonnees_str_liste_coordonnes_float(liste_villes)
 
