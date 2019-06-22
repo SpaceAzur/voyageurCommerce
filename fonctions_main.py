@@ -23,7 +23,7 @@ def demande_choix_ville () :
 
         choix_fichier = input()
 
-        if choix_fichier not in ["1","2","3","4","5","6","7"] :
+        if choix_fichier not in ["1","2","3","4","5","6","7","8","9"] :
 
               print("\nNuméro de ville incorrecte. \n")
 
@@ -56,7 +56,6 @@ def convertion_chemin_liste_pour_user(chemin_liste) :
 
 
 #FONCTION
-#ENSURES
 #PARAM : numero liste choix utilisateur
 #RETURN : chemin fichier csv
 def selection_chemin_fichier_csv (choix_user) :
@@ -65,39 +64,39 @@ def selection_chemin_fichier_csv (choix_user) :
 
     if choix_user == "1" :
 
-        fichier_csv = "data/test10.csv"
+        fichier_csv = "../data/test10.csv"
 
     elif choix_user == "2" :
 
-        fichier_csv = "data/berlin52.csv"
+        fichier_csv = "../data/berlin52.csv"
 
     elif choix_user == "3" :
 
-        fichier_csv = "data/burma14.csv"
+        fichier_csv = "../data/burma14.csv"
 
     elif choix_user == "4" :
 
-        fichier_csv = "data/djibouti38.csv"
+        fichier_csv = "../data/djibouti38.csv"
 
     elif choix_user == "5" :
 
-        fichier_csv = "data/lu980.csv"
+        fichier_csv = "../data/lu980.csv"
 
     elif choix_user == "6" :
 
-        fichier_csv = "data/qatar194.csv"
+        fichier_csv = "../data/qatar194.csv"
 
     elif choix_user == "7" :
 
-        fichier_csv = "data/ulysses16.csv"
+        fichier_csv = "../data/ulysses16.csv"
 
     elif choix_user == "8" :
 
-        fichier_csv = "data/uy734.csv"
+        fichier_csv = "../data/uy734.csv"
 
     elif choix_user == "9" :
 
-        fichier_csv = "data/westsahara29.csv"
+        fichier_csv = "../data/westsahara29.csv"
 
 
     return fichier_csv
