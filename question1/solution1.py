@@ -31,16 +31,16 @@ liste_chemins = liste_chemins_possibles_tuples_coordonnees(liste_villes)
 tableau_distances = calcul_distances_chemins_possibles(liste_chemins)
 
 
-#calcul parcours optimal | distance parcours optimal
+#calcul parcours o1ptimal | distance parcours optimal
 cheminOptimal, distanceCheminOptimal = calcul_chemin_optimal_methode_liste(tableau_distances, liste_chemins, liste_villes)
 
 chrono = (round((time.time() - start_time), 4))
 
 print("\n\nLe chemin le plus court est  : ", convertion_chemin_liste_pour_user(cheminOptimal))
 
-print("\nSa distance est de ", round((distanceCheminOptimal), 4), "unités. ")
+print("\nSa distance est de seulement ", round((distanceCheminOptimal), 4), "unités. ")
 
-print("\nTemps d'exécution du programme : %s secondes " %chrono)
+print("\nTemps d'exécution du programme : %s secondes. C'est vraiment rapide. " %chrono)
 
 
 #Affichage chemin
